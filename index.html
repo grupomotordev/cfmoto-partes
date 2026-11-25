@@ -8,15 +8,15 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--primary:#000;--accent2:#2d2d2d;--bg:#f8f9fa;--card:#fff;--border:#e0e0e0;--text:#333;--text-light:#666}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-.header{background:var(--primary);color:#fff}
+.header{background:var(--primary);color:#fff;width:100%}
 .header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;max-width:1400px;margin:0 auto}
-.logo{display:flex;align-items:center}
+.logo{display:flex;align-items:center;flex-shrink:0}
 .header-search{display:flex;flex:1;max-width:500px;margin:0 40px}
-.header-search input{flex:1;padding:10px 16px;border:none;border-radius:6px;font-size:0.95rem;outline:none}
+.header-search input{flex:1;padding:10px 16px;border:none;border-radius:6px;font-size:0.95rem;outline:none;width:100%}
 .header-search input:focus{box-shadow:0 0 0 2px #555}
 .nav{background:#1a1a1a;padding:0 24px}
-.nav-inner{display:flex;max-width:1400px;margin:0 auto}
-.nav a{color:rgba(255,255,255,0.85);text-decoration:none;padding:10px 20px;font-size:0.9rem;transition:all 0.2s;cursor:pointer}
+.nav-inner{display:flex;max-width:1400px;margin:0 auto;justify-content:flex-start;gap:0}
+.nav a{color:rgba(255,255,255,0.85);text-decoration:none;padding:10px 20px;font-size:0.9rem;transition:all 0.2s;cursor:pointer;text-align:center}
 .nav a:hover,.nav a.active{color:#fff;background:rgba(255,255,255,0.1)}
 .container{max-width:1400px;margin:0 auto;padding:24px}
 .breadcrumb{font-size:0.85rem;color:var(--text-light);margin-bottom:16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -88,8 +88,79 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 .zoom-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:1000;display:flex;align-items:center;justify-content:center;cursor:zoom-out}
 .zoom-overlay img{max-width:95vw;max-height:95vh;object-fit:contain}
 .zoom-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:0.85rem}
-@media(max-width:900px){.main-layout{grid-template-columns:1fr}.sidebar{position:static}.diagram-list ul{max-height:200px}.header-search{max-width:300px;margin:0 16px}.block-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.diagram-image-wrap{height:250px}.diagram-image-container img{max-height:220px}.diagram-view{height:auto;max-height:none}.parts-table-wrap{max-height:400px}}
-@media(max-width:600px){.header-top{flex-wrap:wrap;gap:8px}.header-search{max-width:100%;margin:0;order:3;flex-basis:100%}.selector-row{flex-direction:column}.selector-row select{min-width:100%}.nav-inner{overflow-x:auto}.block-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}}
+/* Mobile: collapsible selector */
+.selector-collapse-btn{display:none;width:100%;padding:10px;background:none;border:1px solid var(--border);border-radius:8px;font-size:0.9rem;color:var(--text);cursor:pointer;text-align:left;margin-bottom:8px}
+.selector-collapse-btn:after{content:'▼';float:right;font-size:0.7rem;opacity:0.5}
+.selector-collapse-btn.collapsed:after{content:'▶'}
+/* Mobile: sidebar as dropdown */
+.mobile-diagram-btn{display:none;width:100%;padding:12px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;text-align:left;margin-bottom:16px}
+.mobile-diagram-btn:after{content:'▼';float:right;opacity:0.6}
+.mobile-diagram-btn.open:after{content:'▲'}
+
+@media(max-width:900px){
+.main-layout{grid-template-columns:1fr}
+.sidebar{position:static}
+.diagram-list{display:none}
+.diagram-list.mobile-open{display:block;margin-bottom:16px}
+.diagram-list ul{max-height:250px}
+.mobile-diagram-btn{display:block}
+.block-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.diagram-image-wrap{height:250px}
+.diagram-image-container img{max-height:220px}
+.diagram-view{height:auto;max-height:none}
+.parts-table-wrap{max-height:400px}
+/* Collapsible selector */
+.selector-collapse-btn{display:block}
+.model-selector.collapsed .selector-row{display:none}
+.model-selector.collapsed{padding:0;border:none;box-shadow:none;margin-bottom:8px}
+.model-selector.collapsed h2{display:none}
+/* Nav tabs compact */
+.nav a{padding:8px 12px;font-size:0.8rem}
+}
+@media(max-width:600px){
+/* Header: full width black, stacked layout */
+.header-top{flex-direction:column;gap:10px;padding:12px 16px;align-items:stretch}
+.logo{justify-content:center}
+.logo img{height:30px !important}
+.header-search{max-width:100%;margin:0;width:100%}
+.header-search input{width:100%}
+/* Hide "Catalogo de Repuestos" text on mobile */
+.header-top>div:last-child{display:none}
+/* Nav tabs: even distribution */
+.nav{padding:0}
+.nav-inner{overflow-x:auto;justify-content:center;width:100%}
+.nav a{padding:8px 0;font-size:0.75rem;white-space:nowrap;flex:1;text-align:center}
+/* Container: consistent padding */
+.container{padding:16px}
+/* Selector: full width with equal padding */
+.model-selector{margin-left:0;margin-right:0;padding:16px}
+.selector-collapse-btn{margin-bottom:12px}
+.selector-row{flex-direction:column;gap:8px}
+.selector-row select{min-width:100%;width:100%}
+/* Grid */
+.block-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+/* Breadcrumb */
+.breadcrumb{font-size:0.75rem;padding:0}
+/* Welcome */
+.welcome-view{padding:20px 16px}
+.welcome-view h2{font-size:1.1rem}
+/* Diagram view: consistent spacing */
+.diagram-view{border-radius:8px;margin:0}
+.diagram-header{padding:12px 16px}
+.diagram-header h2{font-size:0.95rem}
+.diagram-image-wrap{padding:8px}
+/* Table: fit mobile screen, no horizontal overflow */
+.parts-table{font-size:0.75rem}
+.parts-table th{padding:8px 6px;font-size:0.65rem}
+.parts-table td{padding:6px}
+.parts-table .item-no{font-size:0.85rem;width:28px;padding:4px 2px}
+.parts-table .part-num{font-size:0.68rem;word-break:break-all}
+.parts-table .part-name{font-size:0.72rem}
+/* Hide spec column on small screens */
+.parts-table th:nth-child(5),.parts-table td:nth-child(5){display:none}
+/* Mobile diagram btn */
+.mobile-diagram-btn{border-radius:8px;padding:12px 16px}
+}
 </style>
 </head>
 <body>
@@ -109,7 +180,8 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 <a onclick="goHome()">Motocicletas</a><span class="sep">/</span>
 <span id="bcModel"><a onclick="goHome()" style="cursor:pointer">DUAL 250</a></span>
 </div>
-<div class="model-selector">
+<div class="model-selector" id="modelSelector">
+<button class="selector-collapse-btn" id="selectorToggle" onclick="toggleSelector()">DUAL 250 - CF250GY 2026</button>
 <h2>Seleccionar vehiculo</h2>
 <div class="selector-row">
 <select id="selYear"><option value="">Ano</option><option value="2026" selected>2026</option><option value="2025">2025</option><option value="2024">2024</option></select>
@@ -119,7 +191,8 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--
 </div>
 <div class="main-layout">
 <div class="sidebar">
-<div class="diagram-list">
+<button class="mobile-diagram-btn" id="mobileDiagramBtn" onclick="toggleMobileSidebar()">Diagramas</button>
+<div class="diagram-list" id="diagramListPanel">
 <div class="diagram-list-header">
 <span>CF250GY 2026</span>
 <div class="grid-btn" onclick="goHome()" title="Ver todos los diagramas">
@@ -226,6 +299,20 @@ function toggleCatalog(type) {
   goHome();
 }
 
+function toggleSelector() {
+  const sel = document.getElementById('modelSelector');
+  const btn = document.getElementById('selectorToggle');
+  sel.classList.toggle('collapsed');
+  btn.classList.toggle('collapsed');
+}
+
+function toggleMobileSidebar() {
+  const panel = document.getElementById('diagramListPanel');
+  const btn = document.getElementById('mobileDiagramBtn');
+  panel.classList.toggle('mobile-open');
+  btn.classList.toggle('open');
+}
+
 function goHome() {
   document.getElementById('welcomeView').style.display = 'block';
   document.getElementById('diagramView').style.display = 'none';
@@ -246,6 +333,14 @@ function showDiagram(blockId) {
     toggleCatalog(isEngine ? 'engine' : 'vehicle');
   }
   
+  // Auto-collapse sidebar on mobile
+  document.getElementById('diagramListPanel').classList.remove('mobile-open');
+  document.getElementById('mobileDiagramBtn').classList.remove('open');
+  document.getElementById('mobileDiagramBtn').textContent = block.id + ' - ' + block.n;
+  // Auto-collapse selector on mobile
+  document.getElementById('modelSelector').classList.add('collapsed');
+  document.getElementById('selectorToggle').classList.add('collapsed');
+
   document.getElementById('welcomeView').style.display = 'none';
   const dv = document.getElementById('diagramView');
   dv.style.display = 'flex';
@@ -281,7 +376,7 @@ function showDiagram(blockId) {
   } else {
     container.innerHTML = '<div style="padding:40px;color:#999;text-align:center">Imagen no disponible</div>';
   }
-  const parts = PARTS.filter(p => p.b === blockId);
+  const parts = PARTS.filter(p => p.b === blockId).sort((a,b) => parseInt(a.i) - parseInt(b.i));
   document.getElementById('partCount').textContent = parts.length + ' partes';
   renderParts(parts);
   document.getElementById('partsTableWrap').scrollTop = 0;
